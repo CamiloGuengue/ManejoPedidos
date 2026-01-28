@@ -1,0 +1,23 @@
+const API_BASE = 'https://pokeapi.co/api/v2';
+
+export async function getPokemonList() {
+  try {
+    const res = await fetch(`${API_BASE}/pokemon?limit=151`);
+    if (!res.ok) throw new Error('Error cargando Pokémon');
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getPokemonDetail(name) {
+  try {
+    const res = await fetch(`${API_BASE}/pokemon/${name}`);
+    if (!res.ok) throw new Error('Pokémon no encontrado');
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
