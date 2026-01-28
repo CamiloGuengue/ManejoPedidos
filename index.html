@@ -1,0 +1,105 @@
+<!DOCTYPE html>  <!-- Declara que es HTML5 -->
+<html lang="es"> <!-- Página en español -->
+<head>
+  <!-- META TAGS (obligatorios para web moderna) -->
+  <meta charset="UTF-8"> <!-- Codificación caracteres (ñ, acentos) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <!-- RESPONSIVE: se adapta a móviles/tablets -->
+  
+  <title>RestorApp - Sistema de Pedidos</title> <!-- Título pestaña browser -->
+  
+  <!-- BOOTSTRAP CDN (estilos responsive listos) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Trae Bootstrap 5.3.3 desde internet (grids, cards, modales, botones) -->
+  
+  <link rel="stylesheet" href="styles.css"> <!-- Nuestros estilos personalizados -->
+</head>
+
+<!-- CUERPO PRINCIPAL DE LA PÁGINA -->
+<body>
+  
+  <!-- 🧭 NAVBAR SUPERIOR (barra navegación fija arriba) -->
+  <nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- navbar-dark bg-dark = fondo negro, texto blanco -->
+    <div class="container"> <!-- Contenedor centrado max-width -->
+      <!-- LOGO IZQUIERDA -->
+      <a class="navbar-brand" href="#">🍽️ RestorApp</a> 
+      <!-- navbar-brand = logo/título grande, negrita -->
+      
+      <!-- LINKS DINÁMICOS (se llenan con JS según rol user/admin) -->
+      <div class="navbar-nav ms-auto" id="navLinks">
+        <!-- ms-auto = links al extremo derecho -->
+        <!-- id="navLinks" = JS lo rellena: "Menú", "Mis Pedidos", "Admin", etc. -->
+      </div>
+    </div>
+  </nav>
+
+  <!-- 📱 CONTENIDO PRINCIPAL (cambia según vista: login/menú/pedidos/etc) -->
+  <main class="container my-5" id="mainContent">
+    <!-- container = max-width centrado -->
+    <!-- my-5 = margin arriba/abajo grande -->
+    <!-- id="mainContent" = JS reemplaza TODO su contenido por nueva vista -->
+    
+    <!-- 🆕 LOGIN INICIAL (solo se ve sin loguear) -->
+    <div id="loginView" class="row justify-content-center">
+      <!-- row = fila Bootstrap, justify-content-center = centrado horizontal -->
+      <div class="col-md-6"> <!-- col-md-6 = 50% ancho en desktop, 100% móvil -->
+        <div class="card shadow"> <!-- card = caja con borde redondeado -->
+          <div class="card-body text-center"> <!-- Contenido centrado -->
+            <h2>👋 Bienvenido a RestorApp</h2> <!-- Título grande -->
+            <p>Inicia sesión para continuar</p> <!-- Subtítulo -->
+            
+            <!-- FORMULARIO LOGIN SIMPLE -->
+            <input type="email" id="loginEmail" class="form-control mb-3" placeholder="Email">
+            <!-- id="loginEmail" = JS lee este valor -->
+            <!-- form-control = estilo Bootstrap input -->
+            <!-- mb-3 = margin-bottom espacio -->
+            
+            <input type="password" id="loginPass" class="form-control mb-3" placeholder="Contraseña">
+            
+            <!-- BOTÓN LOGIN PRINCIPAL -->
+            <button id="loginBtn" class="btn btn-primary w-100">Ingresar</button>
+            <!-- id="loginBtn" = JS escucha click aquí -->
+            <!-- btn-primary = azul, w-100 = ancho 100% -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 🛒 MODAL CARRITO (ventana emergente para confirmar pedido) -->
+  <div class="modal fade" id="orderModal" tabindex="-1">
+    <!-- modal fade = aparece/desaparece suave -->
+    <!-- id="orderModal" = se abre con data-bs-toggle="modal" -->
+    
+    <div class="modal-dialog"> <!-- Contenedor centrado -->
+      <div class="modal-content"> <!-- Fondo blanco redondeado -->
+        <div class="modal-header"> <!-- Barra superior -->
+          <h5 class="modal-title">Nuevo Pedido</h5> <!-- Título modal -->
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          <!-- X para cerrar modal -->
+        </div>
+        
+        <div class="modal-body"> <!-- CONTENIDO PRINCIPAL MODAL -->
+          <div id="cartItems"></div> <!-- JS rellena: "Hamburguesa x1 - $15" -->
+          <hr> <!-- Línea separadora -->
+          <strong id="cartTotal">$0</strong> <!-- Total dinámico -->
+        </div>
+        
+        <div class="modal-footer"> <!-- BOTONES ABAJO -->
+          <button id="confirmOrder" class="btn btn-success">Confirmar Pedido</button>
+          <!-- id="confirmOrder" = JS crea pedido al click -->
+          <!-- btn-success = verde -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔗 LIBRERÍAS JAVASCRIPT -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JS (modales, tooltips, navbar responsive) -->
+  
+  <script src="app.js" type="module"></script>
+  <!-- NUESTRA LÓGICA PRINCIPAL (type="module" = usa import/export si quisiéramos) -->
+</body>
+</html>

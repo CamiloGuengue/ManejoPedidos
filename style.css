@@ -1,0 +1,59 @@
+/* 🎨 FONDO GENERAL DE LA PÁGINA */
+body { 
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+  /* Crea gradiente diagonal (135°) de azul→morado, estilo Figma moderno */
+  min-height: 100vh; 
+  /* Altura mínima = 100% viewport (pantalla completa, sin scroll blanco) */
+}
+
+/* 🃏 CARDS GENERALES (login, pedidos, productos) */
+.card { 
+  border: none; 
+  /* Quita borde por defecto de Bootstrap */
+  border-radius: 15px; 
+  /* Esquinas redondeadas 15px (suave, profesional) */
+}
+
+/* ✨ EFECTO HOVER PRODUCTOS (animación al pasar mouse) */
+.product-card { 
+  transition: transform 0.2s; 
+  /* Animación suave 0.2s cuando cambia "transform" */
+}
+
+.product-card:hover { 
+  transform: scale(1.05); 
+  /* Al pasar mouse: agranda 5% (1.05x), efecto 3D */
+}
+
+/* 🏷️ COLORES POR ESTADO DE PEDIDO (visual obligatorio) */
+.status-pendiente { 
+  background: #ffc107; 
+  /* Amarillo (atención: esperando) */
+  color: black; 
+  /* Texto negro (amarillo claro necesita contraste) */
+}
+
+.status-preparando { 
+  background: #17a2b8; 
+  /* Cyan/azul (en proceso) */
+}
+
+.status-listo { 
+  background: #28a745; 
+  /* Verde (¡listo para servir!) */
+}
+
+.status-entregado { 
+  background: #6c757d; 
+  /* Gris (terminado) */
+}
+
+/* 📍 ESTILO BADGE ESTADO (usado en JS: class="status-pendiente") */
+.badge-status { 
+  padding: 0.5em 1em; 
+  /* Espaciado interno: alto 0.5em, ancho 1em */
+  border-radius: 20px; 
+  /* Forma píldora redonda */
+  font-weight: bold; 
+  /* Negrita para destacar */
+}
