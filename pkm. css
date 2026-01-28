@@ -1,0 +1,7 @@
+body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+.poke-card { transition: transform 0.2s; border-radius: 15px; }
+.poke-card:hover { transform: scale(1.05); }
+.type-grass { background: #28a745; } .type-fire { background: #dc3545; } .type-water { background: #17a2b8; }
+.type-badge { padding: 0.5em 1em; border-radius: 20px; color: white; font-weight: bold; }
+.loading { text-align: center; padding: 50px; }
+.stats-bar { background: rgba(255,255,255,0.1); border-radius: 10px; }
