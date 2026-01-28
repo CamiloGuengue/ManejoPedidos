@@ -1,0 +1,122 @@
+import { getPokemonList, getPokemonDetail } from './api.js';
+import { login, getCurrentUser, logout } from './auth.js';
+import { state, saveState, addToCollection } from './state.js';
+
+const mainContent = document.getElementById('mainContent');
+const navbar = document.getElementById('navbar');
+const navLinks = document.getElementById('navLinks');
+const logoutBtn = document.getElementById('logoutBtn');
+
+function renderNavbar() {
+  if (state.currentUser) {
+    navLinks.innerHTML = `
+      <ul class="navbar-nav me-auto">
+        ${state.currentUser.role === 'trainer' ? `
+          <li class="nav-item"><a class="nav-link" href="#" onclick="showView('catalog')">Catálogo</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" onclick="showView('collection')">Mi Colección</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" onclick="showView('teams')">Equipos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" onclick="showView('profile')">Perfil</a></li>
+        ` : `
+          <li class="nav-item"><a class="nav-link" href="#" onclick="showView('admin')">Admin</a></li>
+        `}
+      </ul>
+    `;
+    logoutBtn.classList.remove('d-none');
+  } else {
+    navLinks.innerHTML = '';
+    logoutBtn.classList.add('d-none');
+  }
+}
+
+function showLoading() {
+  mainContent.innerHTML = '<div class="loading"><div class="spinner-border text-primary" role="status"></div><p>Cargando...</p></div>';
+}
+
+async function showView(view) {
+  showLoading();
+  switch (view) {
+    case 'login':
+      mainContent.innerHTML = `
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card poke-card">
+              <div class="card-body">
+                <h2>Login</h2>
+                <form id="loginForm">
+                  <input type="email" id="email" class="form-control mb-3" placeholder="Email" required>
+                  <input type="password" id="pass" class="form-control mb-3" placeholder="Password" required>
+                  <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+          const email = document.getElementById('email').value;
+          const pass = document.getElementById('pass').value;
+          state.currentUser = login(email, pass);
+          renderNavbar();
+          showView('catalog');
+        } catch (error) {
+          alert(error.message);
+        }
+      });
+      break;
+    case 'catalog':
+      const list = await getPokemonList();
+      state.pokemonList = list.results;
+      mainContent.innerHTML = `
+        <div class="row">
+          <div class="col-12 mb-3">
+            <input type="text" id="search" class="form-control" placeholder="Buscar Pokémon...">
+          </div>
+        </div>
+        <div id="pokemonGrid" class="row"></div>
+      `;
+      renderPokemonGrid(state.pokemonList.filter(p => state.currentUser.role === 'trainer'));
+      document.getElementById('search').addEventListener('input', (e) => {
+        const filtered = state.pokemonList.filter(p => p.name.includes(e.target.value));
+        renderPokemonGrid(filtered);
+      });
+      break;
+    // Otras vistas similares: collection, teams, profile, admin con map/filter/find/some/every
+  }
+  renderNavbar();
+}
+
+async function renderPokemonGrid(pokemons) {
+  const grid = document.getElementById('pokemonGrid');
+  grid.innerHTML = pokemons.map(p => `
+    <div class="col-md-4 mb-3">
+      <div class="card poke-card">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/201.png" class="card-img-top" alt="${p.name}">
+        <div class="card-body">
+          <h5>${p.name.toUpperCase()}</h5>
+          <button class="btn btn-success w-100" onclick="addPokemon('${p.name}')">Agregar</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+window.addPokemon = async (name) => {
+  try {
+    const detail = await getPokemonDetail(name);
+    addToCollection(detail);
+    alert('¡Pokémon agregado!');
+  } catch (error) {
+    alert('Error');
+  }
+};
+
+logoutBtn.addEventListener('click', () => {
+  logout();
+  state.currentUser = null;
+  showView('login');
+});
+
+// Init
+showView(state.currentUser ? 'catalog' : 'login');
