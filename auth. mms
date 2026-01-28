@@ -1,0 +1,22 @@
+const USERS = [
+  { id: 1, name: 'Admin', email: 'admin@poke.com', role: 'admin', pass: 'admin' },
+  { id: 2, name: 'Entrenador1', email: 'user1@poke.com', role: 'trainer', pass: '123' },
+  { id: 3, name: 'Entrenador2', email: 'user2@poke.com', role: 'trainer', pass: '123' }
+];
+
+export function login(email, pass) {
+  const user = USERS.find(u => u.email === email && u.pass === pass);
+  if (user) {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    return user;
+  }
+  throw new Error('Credenciales inválidas');
+}
+
+export function getCurrentUser() {
+  return JSON.parse(localStorage.getItem('currentUser'));
+}
+
+export function logout() {
+  localStorage.removeItem('currentUser');
+}
