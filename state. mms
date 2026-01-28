@@ -1,0 +1,22 @@
+import { getCurrentUser } from './auth.js';
+
+export let state = {
+  pokemonList: [],
+  currentUser: getCurrentUser(),
+  collection: JSON.parse(localStorage.getItem(`collection_${getCurrentUser()?.id || ''}`)) || [],
+  teams: JSON.parse(localStorage.getItem(`teams_${getCurrentUser()?.id || ''}`)) || []
+};
+
+export function saveState() {
+  if (state.currentUser) {
+    localStorage.setItem(`collection_${state.currentUser.id}`, JSON.stringify(state.collection));
+    localStorage.setItem(`teams_${state.currentUser.id}`, JSON.stringify(state.teams));
+  }
+}
+
+export function addToCollection(pokemon) {
+  if (!state.collection.some(p => p.id === pokemon.id)) {
+    state.collection.push({ ...pokemon, trainerId: state.currentUser.id });
+    saveState();
+  }
+}
